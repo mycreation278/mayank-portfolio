@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Mayank Sharma — CGI Artist & Video Editor. Specializing in commercial CGI, 3D animation, travel films, VFX and AI content.">
+<title>Mayank Sharma — CGI Artist & Video Editor</title>
+<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- VIDEO MODAL -->
+<div id="reel-modal" class="modal" role="dialog" aria-modal="true" aria-label="Showreel video">
+  <div class="modal-backdrop" id="modal-backdrop"></div>
+  <div class="modal-content">
+    <button class="modal-close" id="modal-close" aria-label="Close video">✕</button>
+    <div class="modal-video-wrap">
+      <iframe id="reel-iframe" src="" title="Mayank Sharma Showreel"
+        allow="autoplay; fullscreen" allowfullscreen frameborder="0"></iframe>
+      <video id="reel-video" controls playsinline style="display:none;width:100%;height:100%;background:#000;">
+        <source id="reel-video-src" src="" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast" role="alert" aria-live="polite">
+  <span id="toast-icon"></span>
+  <span id="toast-msg"></span>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">MAYANK<span>.</span>SHARMA</a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire Me</a>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <ul>
+    <li><a href="#work"     class="mob-link">Work</a></li>
+    <li><a href="#about"    class="mob-link">About</a></li>
+    <li><a href="#services" class="mob-link">Services</a></li>
+    <li><a href="#contact"  class="mob-link">Contact</a></li>
+  </ul>
+  <a href="#contact" class="mob-cta mob-link">Hire Me</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-orb"></div>
+
+  <button class="hero-reel-btn" id="reel-btn" aria-label="Watch showreel">
+    <div class="reel-circle">
+      <div class="play-icon"></div>
+    </div>
+    <span class="reel-label">Watch Reel</span>
+  </button>
+
+  <p class="hero-eyebrow">Video Editor &amp; CGI Artist</p>
+  <h1 class="hero-title">Bringing<br><em>Ideas To Life</em></h1>
+
+  <div class="hero-bottom">
+    <p class="hero-desc">Self-taught CGI Artist and Video Editor specializing in commercial advertisements, cinematic storytelling, travel films, AI-generated content, and visual effects. Turning creative ideas into captivating visual experiences.</p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" data-target="15">0+</div>
+        <div class="stat-label">Projects Done</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="2">0+</div>
+        <div class="stat-label">Years Exp</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="10">0+</div>
+        <div class="stat-label">Happy Clients</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Blender</span><span class="marquee-item">Premiere Pro</span>
+    <span class="marquee-item">DaVinci Resolve</span><span class="marquee-item">After Effects</span>
+    <span class="marquee-item">Unreal Engine</span><span class="marquee-item">Photoshop</span>
+    <span class="marquee-item">CGI Advertising</span><span class="marquee-item">VFX Compositing</span>
+    <span class="marquee-item">3D Animation</span><span class="marquee-item">Color Grading</span>
+    <span class="marquee-item">Travel Cinematics</span><span class="marquee-item">AI Advertising</span>
+    <span class="marquee-item">Blender</span><span class="marquee-item">Premiere Pro</span>
+    <span class="marquee-item">DaVinci Resolve</span><span class="marquee-item">After Effects</span>
+    <span class="marquee-item">Unreal Engine</span><span class="marquee-item">Photoshop</span>
+    <span class="marquee-item">CGI Advertising</span><span class="marquee-item">VFX Compositing</span>
+    <span class="marquee-item">3D Animation</span><span class="marquee-item">Color Grading</span>
+    <span class="marquee-item">Travel Cinematics</span><span class="marquee-item">AI Advertising</span>
+  </div>
+</div>
+
+<!-- WORK -->
+<section id="work">
+  <div class="section-header reveal">
+    <div>
+      <p class="section-eyebrow">Selected Work</p>
+      <h2 class="section-title">Featured <em>Projects</em></h2>
+    </div>
+    <a href="#work" class="section-link">View All Work →</a>
+  </div>
+
+  <div class="filters reveal reveal-d1" role="group" aria-label="Project filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="cgi">CGI</button>
+    <button class="filter-btn" data-filter="3d">3D Animation</button>
+    <button class="filter-btn" data-filter="travel">Travel Films</button>
+    <button class="filter-btn" data-filter="ai">AI Ads</button>
+    <button class="filter-btn" data-filter="vfx">VFX</button>
+  </div>
+
+  <div class="proj-grid" id="proj-grid">
+
+    <article class="proj-card reveal" data-cat="cgi">
+      <div class="proj-inner" style="background:linear-gradient(135deg,#0e0e1e,#1a1228,#0d1a24)">
+        <svg viewBox="0 0 200 200" fill="none"><polygon points="100,20 180,160 20,160" stroke="rgba(201,168,76,.6)" stroke-width="1.5"/><polygon points="100,50 155,145 45,145" stroke="rgba(201,168,76,.3)" stroke-width="1"/><circle cx="100" cy="110" r="28" stroke="rgba(201,168,76,.5)" stroke-width="1" fill="rgba(201,168,76,.05)"/><circle cx="100" cy="20" r="3" fill="#c9a84c"/><circle cx="180" cy="160" r="3" fill="#c9a84c"/><circle cx="20" cy="160" r="3" fill="#c9a84c"/></svg>
+      </div>
+      <div class="proj-card-info"><div class="proj-card-cat">CGI Advertisement</div><div class="proj-card-title">Commercial Product Advertisement</div></div>
+      <div class="proj-overlay">
+        <div class="proj-cat">CGI Advertisement · 2024</div>
+        <div class="proj-name">Commercial Product Advertisement</div>
+        <div class="proj-tools">Blender · After Effects · DaVinci</div>
+        <button class="proj-view-btn" data-video="videos/project1.mp4">View Project ↗</button>
+      </div>
+    </article>
+
+    <article class="proj-card reveal reveal-d1" data-cat="3d">
+      <div class="proj-inner" style="background:linear-gradient(160deg,#12080e,#0f0f20)">
+        <svg viewBox="0 0 200 200" fill="none"><rect x="60" y="60" width="80" height="80" rx="4" stroke="rgba(201,168,76,.5)" stroke-width="1.5" fill="rgba(201,168,76,.03)"/><rect x="40" y="40" width="80" height="80" rx="4" stroke="rgba(201,168,76,.2)" stroke-width="1"/><line x1="40" y1="40" x2="60" y2="60" stroke="rgba(201,168,76,.25)" stroke-width="1"/><line x1="120" y1="40" x2="140" y2="60" stroke="rgba(201,168,76,.25)" stroke-width="1"/><line x1="40" y1="120" x2="60" y2="140" stroke="rgba(201,168,76,.25)" stroke-width="1"/><line x1="120" y1="120" x2="140" y2="140" stroke="rgba(201,168,76,.25)" stroke-width="1"/><circle cx="100" cy="100" r="16" fill="rgba(201,168,76,.12)" stroke="rgba(201,168,76,.6)" stroke-width="1"/></svg>
+      </div>
+      <div class="proj-card-info"><div class="proj-card-cat">3D Animation</div><div class="proj-card-title">Cinematic CGI Showcase</div></div>
+      <div class="proj-overlay">
+        <div class="proj-cat">3D Animation · 2024</div>
+        <div class="proj-name">Cinematic CGI Showcase</div>
+        <div class="proj-tools">Blender · Unreal Engine</div>
+        <button class="proj-view-btn" data-video="videos/project2.mp4">View Project ↗</button>
+      </div>
+    </article>
+
+    <article class="proj-card reveal reveal-d2" data-cat="travel">
+      <div class="proj-inner" style="background:linear-gradient(135deg,#080e18,#0d1a10)">
+        <svg viewBox="0 0 200 200" fill="none"><path d="M20 140 Q50 80 80 100 Q110 120 140 60 Q160 30 180 70" stroke="rgba(201,168,76,.5)" stroke-width="1.5"/><path d="M20 160 Q60 120 100 130 Q140 140 180 90" stroke="rgba(201,168,76,.2)" stroke-width="1"/><circle cx="140" cy="60" r="20" stroke="rgba(201,168,76,.4)" stroke-width="1" fill="rgba(201,168,76,.05)"/><circle cx="140" cy="60" r="4" fill="rgba(201,168,76,.8)"/></svg>
+      </div>
+      <div class="proj-card-info"><div class="proj-card-cat">Travel Film</div><div class="proj-card-title">Kullu Manali Travel Cinematic</div></div>
+      <div class="proj-overlay">
+        <div class="proj-cat">Travel Film · 2024</div>
+        <div class="proj-name">Kullu Manali Travel Cinematic</div>
+        <div class="proj-tools">Premiere Pro · DaVinci Resolve</div>
+        <button class="proj-view-btn" data-video="videos/project3.mp4">View Project ↗</button>
+      </div>
+    </article>
+
+    <article class="proj-card reveal reveal-d3" data-cat="ai">
+      <div class="proj-inner" style="background:linear-gradient(135deg,#10080e,#0a0a18)">
+        <svg viewBox="0 0 200 200" fill="none"><circle cx="100" cy="100" r="60" stroke="rgba(201,168,76,.1)" stroke-width="1"/><circle cx="100" cy="100" r="40" stroke="rgba(201,168,76,.2)" stroke-width="1" stroke-dasharray="5,5"/><circle cx="100" cy="100" r="20" stroke="rgba(201,168,76,.5)" stroke-width="1.5" fill="rgba(201,168,76,.06)"/><circle cx="100" cy="40" r="4" fill="rgba(201,168,76,.8)"/><circle cx="100" cy="160" r="4" fill="rgba(201,168,76,.8)"/><circle cx="40" cy="100" r="4" fill="rgba(201,168,76,.8)"/><circle cx="160" cy="100" r="4" fill="rgba(201,168,76,.8)"/></svg>
+      </div>
+      <div class="proj-card-info"><div class="proj-card-cat">AI Advertisement</div><div class="proj-card-title">AI Generated Commercial</div></div>
+      <div class="proj-overlay">
+        <div class="proj-cat">AI Advertisement · 2025</div>
+        <div class="proj-name">AI Generated Commercial</div>
+        <div class="proj-tools">AI Tools · After Effects · Premiere</div>
+        <button class="proj-view-btn" data-video="videos/project4.mp4">View Project ↗</button>
+      </div>
+    </article>
+
+    <article class="proj-card reveal reveal-d4" data-cat="vfx">
+      <div class="proj-inner" style="background:linear-gradient(135deg,#0e1018,#08100a)">
+        <svg viewBox="0 0 200 200" fill="none"><path d="M100 30 L130 80 L180 80 L140 115 L155 165 L100 135 L45 165 L60 115 L20 80 L70 80 Z" stroke="rgba(201,168,76,.45)" stroke-width="1.5" fill="rgba(201,168,76,.04)"/><circle cx="100" cy="100" r="12" fill="rgba(201,168,76,.15)" stroke="rgba(201,168,76,.7)" stroke-width="1"/></svg>
+      </div>
+      <div class="proj-card-info"><div class="proj-card-cat">VFX Project</div><div class="proj-card-title">Visual Effects Breakdown</div></div>
+      <div class="proj-overlay">
+        <div class="proj-cat">VFX · 2025</div>
+        <div class="proj-name">Visual Effects Breakdown</div>
+        <div class="proj-tools">After Effects · Blender · Premiere</div>
+        <button class="proj-view-btn" data-video="videos/project5.mp4">View Project ↗</button>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual reveal">
+    <div class="about-photo">
+      <div class="about-photo-inner">
+        <img src="images/profile.jpeg" alt="Mayank Sharma" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+      </div>
+    </div>
+    <div class="about-badge"><span class="badge-num">2+</span><span class="badge-text">Years</span></div>
+  </div>
+
+  <div class="reveal reveal-d1">
+    <p class="about-eyebrow">About Me</p>
+    <h2 class="about-title">The Artist <em>Behind</em><br>the Vision</h2>
+    <p class="about-bio">I'm Mayank Sharma, a self-taught CGI Artist and Video Editor passionate about cinematic storytelling and visual creativity. I specialize in creating commercial advertisements, CGI product visuals, travel cinematics, AI-powered content, and engaging video edits.</p>
+    <p class="about-bio">Over the past two years, I have developed expertise in video editing, 3D animation, motion graphics, VFX compositing, and color grading. My goal is simple — transform ideas into powerful visual experiences that connect with audiences.</p>
+
+    <div class="tools-grid">
+      <div class="tool-item"><span class="tool-icon">🔷</span><div class="tool-name">Blender</div></div>
+      <div class="tool-item"><span class="tool-icon">🎬</span><div class="tool-name">Premiere</div></div>
+      <div class="tool-item"><span class="tool-icon">🎨</span><div class="tool-name">DaVinci</div></div>
+      <div class="tool-item"><span class="tool-icon">✨</span><div class="tool-name">After FX</div></div>
+      <div class="tool-item"><span class="tool-icon">🌐</span><div class="tool-name">Unreal</div></div>
+      <div class="tool-item"><span class="tool-icon">🖼</span><div class="tool-name">Photoshop</div></div>
+      <div class="tool-item"><span class="tool-icon">🤖</span><div class="tool-name">AI Tools</div></div>
+      <div class="tool-item"><span class="tool-icon">🎞</span><div class="tool-name">Audition</div></div>
+    </div>
+
+    <div class="about-actions">
+      <a href="#contact" class="about-cta">Let's create together →</a>
+      <a href="/resume.pdf" class="about-resume" download>Download CV ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header reveal">
+    <div>
+      <p class="section-eyebrow">What I Do</p>
+      <h2 class="section-title">My <em>Services</em></h2>
+    </div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal"><div class="service-num">01</div><h3 class="service-title">CGI Advertisements</h3><p class="service-desc">Creating realistic CGI commercials and product advertisements that captivate audiences and elevate brand identity.</p><div class="service-tags"><span class="service-tag">Blender</span><span class="service-tag">Product Viz</span><span class="service-tag">3D Render</span></div></div>
+    <div class="service-card reveal reveal-d1"><div class="service-num">02</div><h3 class="service-title">Video Editing</h3><p class="service-desc">Professional editing for social media, brands, and businesses. Precision cuts that tell your story with impact.</p><div class="service-tags"><span class="service-tag">Premiere Pro</span><span class="service-tag">Pacing</span><span class="service-tag">Reels</span></div></div>
+    <div class="service-card reveal reveal-d2"><div class="service-num">03</div><h3 class="service-title">3D Animation</h3><p class="service-desc">Bringing concepts to life through cinematic 3D animation. From product fly-throughs to full CGI sequences.</p><div class="service-tags"><span class="service-tag">Blender</span><span class="service-tag">Unreal Engine</span><span class="service-tag">Rigging</span></div></div>
+    <div class="service-card reveal reveal-d1"><div class="service-num">04</div><h3 class="service-title">Motion Graphics</h3><p class="service-desc">Dynamic motion design and animated visual elements that strengthen brand identity and production value.</p><div class="service-tags"><span class="service-tag">After Effects</span><span class="service-tag">Titles</span><span class="service-tag">2D/3D</span></div></div>
+    <div class="service-card reveal reveal-d2"><div class="service-num">05</div><h3 class="service-title">VFX Compositing</h3><p class="service-desc">Seamless visual effects integration and compositing. Making the impossible look completely real.</p><div class="service-tags"><span class="service-tag">After Effects</span><span class="service-tag">Tracking</span><span class="service-tag">Compositing</span></div></div>
+    <div class="service-card reveal reveal-d3"><div class="service-num">06</div><h3 class="service-title">Travel Cinematics</h3><p class="service-desc">Story-driven travel films and cinematic reels that capture the soul of a destination with breathtaking visuals.</p><div class="service-tags"><span class="service-tag">Color Grade</span><span class="service-tag">DaVinci</span><span class="service-tag">Cinematic</span></div></div>
+  </div>
+</section>
+
+<!-- SPECIALISM STRIP -->
+<div class="clients-strip reveal">
+  <p class="clients-label">Specializing In</p>
+  <div class="clients-row">
+    <span class="client-logo">CGI ADS</span>
+    <span class="client-logo">COMMERCIALS</span>
+    <span class="client-logo">TRAVEL FILMS</span>
+    <span class="client-logo">AI CONTENT</span>
+    <span class="client-logo">VFX</span>
+    <span class="client-logo">3D ANIMATION</span>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-left reveal">
+    <p class="section-eyebrow">Get In Touch</p>
+    <h2 class="section-title">Let's Make<br><em>Something</em> Great</h2>
+    <p class="contact-desc">Looking for a CGI advertisement, cinematic edit, travel film, or creative visual project? Let's collaborate and bring your ideas to life.</p>
+    <div class="contact-direct">
+      <a href="mailto:mayanksharma6901@gmail.com" class="contact-item">
+        <div class="contact-icon">✉</div>mayanksharma6901@gmail.com
+      </a>
+      <a href="tel:+919179326901" class="contact-item">
+        <div class="contact-icon">☎</div>+91 9179 326901
+      </a>
+      <a href="https://calendly.com" target="_blank" rel="noopener" class="contact-item">
+        <div class="contact-icon">📅</div>Book a call via Calendly
+      </a>
+    </div>
+    <div class="contact-socials">
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="social-pill">Instagram</a>
+      <a href="https://youtube.com"   target="_blank" rel="noopener" class="social-pill">YouTube</a>
+      <a href="https://www.linkedin.com/in/mayank-sharma-069169255/"  target="_blank" rel="noopener" class="social-pill">LinkedIn</a>
+      <a href="https://behance.net"   target="_blank" rel="noopener" class="social-pill">Behance</a>
+    </div>
+  </div>
+
+  <div class="reveal reveal-d1">
+    <form class="contact-form" id="contact-form" novalidate>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" for="f-name">Your Name *</label>
+          <input type="text" id="f-name" name="name" class="form-input" placeholder="Your Name" required>
+          <span class="field-error" id="err-name"></span>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="f-email">Email *</label>
+          <input type="email" id="f-email" name="email" class="form-input" placeholder="your@email.com" required>
+          <span class="field-error" id="err-email"></span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" for="f-project">Project Type *</label>
+          <input type="text" id="f-project" name="projectType" class="form-input" placeholder="CGI Ad / Travel Film / VFX…" required>
+          <span class="field-error" id="err-projectType"></span>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="f-budget">Budget Range</label>
+          <input type="text" id="f-budget" name="budget" class="form-input" placeholder="₹5,000 – ₹50,000">
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="f-message">Tell me about your project *</label>
+        <textarea id="f-message" name="message" class="form-textarea" placeholder="Describe your vision, timeline, and any specific requirements…" required></textarea>
+        <span class="field-error" id="err-message"></span>
+      </div>
+      <button type="submit" class="submit-btn" id="submit-btn">
+        <span id="btn-text">Send Message →</span>
+        <span id="btn-loader" hidden>Sending…</span>
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">MAYANK<span>.</span>SHARMA</div>
+  <p class="footer-copy">© 2026 Mayank Sharma. All rights reserved.</p>
+  <div class="footer-socials">
+    <a href="https://instagram.com" target="_blank" rel="noopener" class="social-link">Instagram</a>
+    <a href="https://youtube.com"   target="_blank" rel="noopener" class="social-link">YouTube</a>
+    <a href="https://linkedin.com"  target="_blank" rel="noopener" class="social-link">LinkedIn</a>
+    <a href="https://behance.net"   target="_blank" rel="noopener" class="social-link">Behance</a>
+  </div>
+</footer>
+
+<a href="#hero" class="back-top" id="back-top" aria-label="Back to top">↑</a>
+
+<script src="js/main.js"></script>
+</body>
+</html>
