@@ -1,392 +1,326 @@
-/* ─────────────────────────────────────────────────────────────
-   public/js/main.js  —  All frontend interactions
-───────────────────────────────────────────────────────────── */
+/* =====================================================
+   MAYANK SHARMA — PORTFOLIO  |  main.js
+   ===================================================== */
 
-(function () {
-  'use strict';
+'use strict';
 
-  /* ── Utility ─────────────────────────────────────────────── */
-  const $  = (sel, ctx = document) => ctx.querySelector(sel);
-  const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
+// ── CONFIG ──────────────────────────────────────────
+// Replace this with your actual showreel YouTube embed URL
+const SHOWREEL_URL = 'https://www.youtube.com/embed/YOUR_SHOWREEL_ID?autoplay=1&rel=0';
 
-  /* ═══════════════════════════════════════════════════════════
-     1. CUSTOM CURSOR (desktop only)
-  ═══════════════════════════════════════════════════════════ */
-  const cursor     = $('#cursor');
-  const cursorRing = $('#cursor-ring');
+// ── DOM REFS ────────────────────────────────────────
+const nav          = document.getElementById('nav');
+const hamburger    = document.getElementById('hamburger');
+const mobileMenu   = document.getElementById('mobileMenu');
+const mobileClose  = document.getElementById('mobileClose');
+const mobileLinks  = document.querySelectorAll('.mobile-link');
+const btnReel      = document.getElementById('btnReel');
+const videoModal   = document.getElementById('videoModal');
+const modalClose   = document.getElementById('modalClose');
+const modalFrame   = document.getElementById('modalFrame');
+const backTop      = document.getElementById('backTop');
+const toast        = document.getElementById('toast');
+const cursor       = document.getElementById('cursor');
+const cursorDot    = document.getElementById('cursorDot');
+const contactForm  = document.getElementById('contactForm');
+const statNums     = document.querySelectorAll('.stat-num');
+const revealEls    = document.querySelectorAll('.reveal');
+const filterPills  = document.querySelectorAll('.filter-pill');
+const catBlocks    = document.querySelectorAll('.cat-block');
+const watchBtns    = document.querySelectorAll('.watch-btn:not(:disabled)');
 
-  if (cursor && cursorRing && window.matchMedia('(pointer:fine)').matches) {
-    let mx = 0, my = 0, rx = 0, ry = 0;
+// ── CUSTOM CURSOR ────────────────────────────────────
+if (window.matchMedia('(hover: hover)').matches) {
+  let mouseX = 0, mouseY = 0;
+  let curX = 0, curY = 0;
 
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.left = mx + 'px';
-      cursor.style.top  = my + 'px';
-    });
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (cursorDot) {
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top  = mouseY + 'px';
+    }
+  });
 
-    (function animRing() {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      cursorRing.style.left = rx + 'px';
-      cursorRing.style.top  = ry + 'px';
-      requestAnimationFrame(animRing);
-    })();
+  const animateCursor = () => {
+    curX += (mouseX - curX) * 0.12;
+    curY += (mouseY - curY) * 0.12;
+    if (cursor) {
+      cursor.style.left = curX + 'px';
+      cursor.style.top  = curY + 'px';
+    }
+    requestAnimationFrame(animateCursor);
+  };
+  requestAnimationFrame(animateCursor);
 
-    document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; cursorRing.style.opacity = '0'; });
-    document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; cursorRing.style.opacity = '1'; });
-  }
+  // Hover state for interactive elements
+  const hoverTargets = 'a, button, .proj-card:not(.proj-card--coming), .svc-card, .filter-pill';
+  document.querySelectorAll(hoverTargets).forEach(el => {
+    el.addEventListener('mouseenter', () => cursor && cursor.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => cursor && cursor.classList.remove('hovering'));
+  });
+}
 
-  /* ═══════════════════════════════════════════════════════════
-     2. NAVIGATION — sticky + active link highlight
-  ═══════════════════════════════════════════════════════════ */
-  const nav = $('#nav');
+// ── NAV SCROLL ───────────────────────────────────────
+const onScroll = () => {
+  const scrollY = window.scrollY;
 
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-    // Back-to-top button
-    const backTop = $('#back-top');
-    if (backTop) backTop.classList.toggle('visible', window.scrollY > 400);
-  }, { passive: true });
+  // Sticky nav
+  if (nav) nav.classList.toggle('scrolled', scrollY > 60);
 
-  // Active nav link on scroll
-  const sections  = $$('section[id], div[id="contact"]');
-  const navAnchors = $$('.nav-links a');
+  // Back to top
+  if (backTop) backTop.classList.toggle('visible', scrollY > 400);
+};
 
-  const sectionObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navAnchors.forEach(a => {
-          a.classList.toggle('active-nav', a.getAttribute('href') === '#' + entry.target.id);
-        });
-      }
-    });
-  }, { rootMargin: '-40% 0px -55% 0px' });
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll(); // run once on load
 
-  sections.forEach(s => sectionObserver.observe(s));
+// ── BACK TO TOP ──────────────────────────────────────
+if (backTop) {
+  backTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
 
-  /* ═══════════════════════════════════════════════════════════
-     3. HAMBURGER / MOBILE MENU
-  ═══════════════════════════════════════════════════════════ */
-  const hamburger  = $('#hamburger');
-  const mobileMenu = $('#mobile-menu');
+// ── MOBILE MENU ──────────────────────────────────────
+const openMobileMenu = () => {
+  mobileMenu && mobileMenu.classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
 
-  if (hamburger && mobileMenu) {
-    hamburger.addEventListener('click', () => {
-      const isOpen = hamburger.classList.toggle('open');
-      mobileMenu.classList.toggle('open', isOpen);
-      hamburger.setAttribute('aria-expanded', isOpen);
-      mobileMenu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
+const closeMobileMenu = () => {
+  mobileMenu && mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+};
 
-    $$('.mob-link').forEach(link => {
-      link.addEventListener('click', () => {
-        hamburger.classList.remove('open');
-        mobileMenu.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-        mobileMenu.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-      });
-    });
-  }
+hamburger  && hamburger.addEventListener('click', openMobileMenu);
+mobileClose && mobileClose.addEventListener('click', closeMobileMenu);
+mobileLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
 
-  /* ═══════════════════════════════════════════════════════════
-     4. TOAST NOTIFICATION
-  ═══════════════════════════════════════════════════════════ */
-  let toastTimer = null;
+// ── VIDEO MODAL ──────────────────────────────────────
+const openModal = (url) => {
+  if (!videoModal || !modalFrame) return;
+  modalFrame.src = url || '';
+  videoModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
 
-  function showToast(message, type = 'success') {
-    const toast    = $('#toast');
-    const toastMsg = $('#toast-msg');
-    const toastIcon = $('#toast-icon');
-    if (!toast) return;
+const closeModal = () => {
+  if (!videoModal || !modalFrame) return;
+  videoModal.classList.remove('open');
+  document.body.style.overflow = '';
+  // delay src clear so close animation plays
+  setTimeout(() => { modalFrame.src = ''; }, 350);
+};
 
-    toastMsg.textContent  = message;
-    toastIcon.textContent = type === 'success' ? '✓' : '✕';
-    toast.className       = `toast ${type} show`;
+// Showreel button
+if (btnReel) {
+  btnReel.addEventListener('click', () => openModal(SHOWREEL_URL));
+}
 
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 4500);
-  }
-
-  /* ═══════════════════════════════════════════════════════════
-     5. VIDEO MODAL (Showreel + Project videos)
-  ═══════════════════════════════════════════════════════════ */
-  const modal      = $('#reel-modal');
-  const iframe     = $('#reel-iframe');
-  const videoEl    = $('#reel-video');
-  const videoSrc   = $('#reel-video-src');
-  const backdrop   = $('#modal-backdrop');
-  const closeBtn   = $('#modal-close');
-
-  // ── Showreel: use a local file path or a YouTube embed URL ──
-  // Local example:  'videos/showreel.mp4'
-  // YouTube example: 'https://www.youtube.com/embed/YOUR_SHOWREEL_ID?autoplay=1&rel=0'
-  const SHOWREEL_URL = 'videos/showreel.mp4';
-
-  // Returns true if the URL points to a local/hosted video file
-  function isLocalVideo(url) {
-    if (!url) return false;
-    // Treat it as local if it does NOT start with http/https,
-    // OR if it ends with a known video extension
-    return !/^https?:\/\//i.test(url) ||
-           /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url);
-  }
-
-  function openModal(videoUrl) {
-    if (!modal) return;
-    if (isLocalVideo(videoUrl)) {
-      // Show HTML5 video player, hide iframe
-      iframe.style.display = 'none';
-      videoEl.style.display = 'block';
-      videoSrc.src = videoUrl;
-      // Update <source> type based on extension
-      if (/\.webm(\?.*)?$/i.test(videoUrl)) videoSrc.type = 'video/webm';
-      else if (/\.ogg(\?.*)?$/i.test(videoUrl)) videoSrc.type = 'video/ogg';
-      else videoSrc.type = 'video/mp4';
-      videoEl.load();
-      videoEl.play().catch(() => {}); // autoplay (may be blocked by browser)
+// Watch Project buttons
+watchBtns.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const url = btn.getAttribute('data-video');
+    if (url && url !== 'YOUR_YOUTUBE_EMBED_URL_HERE') {
+      openModal(url);
     } else {
-      // Show iframe for YouTube / Vimeo
-      videoEl.style.display = 'none';
-      iframe.style.display = 'block';
-      iframe.src = videoUrl + (videoUrl.includes('?') ? '&' : '?') + 'autoplay=1';
+      showToast('Video coming soon!', 'error');
     }
-    modal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal() {
-    if (!modal) return;
-    modal.classList.remove('open');
-    // Stop both players
-    iframe.src = '';
-    iframe.style.display = 'block';
-    videoEl.pause();
-    videoEl.src = '';
-    videoSrc.src = '';
-    videoEl.style.display = 'none';
-    document.body.style.overflow = '';
-  }
-
-  // Watch Reel button in Hero
-  const reelBtn = $('#reel-btn');
-  if (reelBtn) {
-    reelBtn.addEventListener('click', () => openModal(SHOWREEL_URL));
-  }
-
-  // Project "View Project" buttons
-  $$('.proj-view-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      const videoUrl = btn.dataset.video;
-      if (videoUrl) openModal(videoUrl);
-    });
   });
+});
 
-  // Close modal
-  if (closeBtn)  closeBtn.addEventListener('click', closeModal);
-  if (backdrop)  backdrop.addEventListener('click', closeModal);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-  /* ═══════════════════════════════════════════════════════════
-     6. PROJECT FILTER
-  ═══════════════════════════════════════════════════════════ */
-  const filterBtns = $$('.filter-btn');
-  const projCards  = $$('.proj-card');
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const filter = btn.dataset.filter;
-
-      projCards.forEach((card, i) => {
-        const cat     = card.dataset.cat || '';
-        const matches = filter === 'all' || cat === filter;
-
-        if (matches) {
-          card.classList.remove('hidden');
-          card.style.animation = `fadeUp .5s ${i * 0.07}s both`;
-        } else {
-          card.classList.add('hidden');
-          card.style.animation = '';
-        }
-      });
-    });
+// Click on project card (not on button) also opens modal
+document.querySelectorAll('.proj-card:not(.proj-card--coming)').forEach(card => {
+  card.addEventListener('click', (e) => {
+    if (e.target.closest('.watch-btn')) return; // already handled above
+    const btn = card.querySelector('.watch-btn:not(:disabled)');
+    if (!btn) return;
+    const url = btn.getAttribute('data-video');
+    if (url && url !== 'YOUR_YOUTUBE_EMBED_URL_HERE') {
+      openModal(url);
+    }
   });
+});
 
-  /* ═══════════════════════════════════════════════════════════
-     7. SCROLL REVEAL
-  ═══════════════════════════════════════════════════════════ */
-  const revealEls = $$('.reveal');
+// Close modal
+if (modalClose) modalClose.addEventListener('click', closeModal);
+if (videoModal) {
+  videoModal.addEventListener('click', (e) => {
+    if (e.target === videoModal) closeModal();
+  });
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
 
-  const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  revealEls.forEach(el => revealObserver.observe(el));
-
-  /* ═══════════════════════════════════════════════════════════
-     8. STAT COUNT-UP
-  ═══════════════════════════════════════════════════════════ */
-  const statNums = $$('[data-target]');
-
-  const countObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el     = entry.target;
-      const target = parseInt(el.dataset.target, 10);
-      let current  = 0;
-      const step   = Math.max(target / 50, 0.5);
-
-      const timer = setInterval(() => {
-        current = Math.min(current + step, target);
-        el.textContent = Math.floor(current) + '+';
-        if (current >= target) clearInterval(timer);
-      }, 28);
-
-      countObserver.unobserve(el);
-    });
-  }, { threshold: 0.6 });
-
-  statNums.forEach(el => countObserver.observe(el));
-
-  /* ═══════════════════════════════════════════════════════════
-     9. CONTACT FORM — client-side validation + API submission
-  ═══════════════════════════════════════════════════════════ */
-  const form      = $('#contact-form');
-  const submitBtn = $('#submit-btn');
-  const btnText   = $('#btn-text');
-  const btnLoader = $('#btn-loader');
-
-  // Field-level error helpers
-  function setError(fieldName, message) {
-    const input = form.elements[fieldName];
-    const errEl = $('#err-' + fieldName);
-    if (input) input.classList.add('error');
-    if (errEl) errEl.textContent = message;
-  }
-
-  function clearErrors() {
-    $$('.form-input, .form-textarea', form).forEach(el => el.classList.remove('error'));
-    $$('.field-error', form).forEach(el => el.textContent = '');
-  }
-
-  function validateForm(data) {
-    let valid = true;
-
-    if (!data.name || data.name.trim().length < 2) {
-      setError('name', 'Please enter your name.'); valid = false;
+// ── SCROLL REVEAL ────────────────────────────────────
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
     }
+  });
+}, {
+  threshold: 0.08,
+  rootMargin: '0px 0px -40px 0px'
+});
 
-    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!data.email || !emailRe.test(data.email)) {
-      setError('email', 'Please enter a valid email address.'); valid = false;
+revealEls.forEach((el, i) => {
+  // Stagger sibling cards naturally
+  el.style.transitionDelay = (i % 3) * 0.08 + 's';
+  revealObserver.observe(el);
+});
+
+// ── STAT COUNT-UP ────────────────────────────────────
+const countUp = (el, target, duration = 1400) => {
+  let start = null;
+  const step = (timestamp) => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+    el.textContent = Math.floor(eased * target);
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = target;
+  };
+  requestAnimationFrame(step);
+};
+
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.getAttribute('data-target'), 10);
+      countUp(el, target);
+      statsObserver.unobserve(el);
     }
+  });
+}, { threshold: 0.5 });
 
-    if (!data.projectType || data.projectType.trim().length < 2) {
-      setError('projectType', 'Please describe the project type.'); valid = false;
-    }
+statNums.forEach(el => statsObserver.observe(el));
 
-    if (!data.message || data.message.trim().length < 20) {
-      setError('message', 'Message must be at least 20 characters.'); valid = false;
-    }
+// ── FILTER PILLS ─────────────────────────────────────
+filterPills.forEach(pill => {
+  pill.addEventListener('click', () => {
+    // Update active pill
+    filterPills.forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
 
-    return valid;
-  }
+    const filter = pill.getAttribute('data-filter');
 
-  if (form) {
-    // Clear error on input
-    $$('.form-input, .form-textarea', form).forEach(el => {
-      el.addEventListener('input', () => {
-        el.classList.remove('error');
-        const errEl = $('#err-' + el.name);
-        if (errEl) errEl.textContent = '';
-      });
-    });
+    catBlocks.forEach(block => {
+      const blockCat = block.getAttribute('data-cat');
+      const show = filter === 'all' || blockCat === filter;
 
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
-      clearErrors();
+      block.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
 
-      const data = {
-        name       : form.elements['name'].value,
-        email      : form.elements['email'].value,
-        projectType: form.elements['projectType'].value,
-        budget     : form.elements['budget'].value,
-        message    : form.elements['message'].value,
-      };
-
-      if (!validateForm(data)) return;
-
-      // Show loading state
-      submitBtn.disabled    = true;
-      btnText.hidden        = true;
-      btnLoader.hidden      = false;
-
-      try {
-        const res  = await fetch('/api/contact', {
-          method : 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body   : JSON.stringify(data),
+      if (show) {
+        block.style.display = '';
+        requestAnimationFrame(() => {
+          block.style.opacity = '1';
+          block.style.transform = 'translateY(0)';
         });
-
-        const result = await res.json();
-
-        if (res.ok && result.success) {
-          showToast(result.message || "Thanks! I'll be in touch within 24 hours.", 'success');
-          form.reset();
-        } else {
-          // Show server-side field errors if any
-          if (result.errors && result.errors.length) {
-            result.errors.forEach(err => setError(err.field, err.msg));
+      } else {
+        block.style.opacity = '0';
+        block.style.transform = 'translateY(16px)';
+        setTimeout(() => {
+          if (pill.getAttribute('data-filter') !== 'all' && block.getAttribute('data-cat') !== pill.getAttribute('data-filter')) {
+            block.style.display = 'none';
           }
-          showToast(result.message || 'Something went wrong. Please try again.', 'error');
-        }
-      } catch (err) {
-        console.error('Form error:', err);
-        showToast('Network error. Please email me directly at hello@mayanksharma.in', 'error');
-      } finally {
-        submitBtn.disabled = false;
-        btnText.hidden     = false;
-        btnLoader.hidden   = true;
-      }
-    });
-  }
-
-  /* ═══════════════════════════════════════════════════════════
-     10. SMOOTH SCROLL for all internal anchor links
-  ═══════════════════════════════════════════════════════════ */
-  $$('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', e => {
-      const target = document.querySelector(anchor.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        const offset = 80; // nav height
-        const top = target.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
+        }, 350);
       }
     });
   });
+});
 
-  /* ═══════════════════════════════════════════════════════════
-     11. PROJECT CARD — keyboard accessibility
-  ═══════════════════════════════════════════════════════════ */
-  projCards.forEach(card => {
-    card.setAttribute('tabindex', '0');
-    card.addEventListener('keypress', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        const btn = card.querySelector('.proj-view-btn');
-        if (btn) btn.click();
+// ── CONTACT FORM ─────────────────────────────────────
+if (contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const btn = contactForm.querySelector('.btn-submit');
+    const originalText = btn.textContent;
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    const formData = {
+      name:        contactForm.name.value.trim(),
+      email:       contactForm.email.value.trim(),
+      projectType: contactForm.projectType.value,
+      budget:      contactForm.budget.value,
+      message:     contactForm.message.value.trim()
+    };
+
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.projectType || !formData.message) {
+      showToast('Please fill in all required fields.', 'error');
+      btn.textContent = originalText;
+      btn.disabled = false;
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      showToast('Please enter a valid email address.', 'error');
+      btn.textContent = originalText;
+      btn.disabled = false;
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      if (res.ok) {
+        showToast('Message sent! I\'ll get back to you soon.', 'success');
+        contactForm.reset();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        showToast(data.error || 'Something went wrong. Please try again.', 'error');
       }
-    });
+    } catch {
+      showToast('Network error. Please try again.', 'error');
+    } finally {
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
   });
+}
 
-})();
+// ── TOAST ────────────────────────────────────────────
+const showToast = (message, type = 'success') => {
+  if (!toast) return;
+  toast.textContent = message;
+  toast.className = `toast ${type} show`;
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3800);
+};
+
+// ── SMOOTH SCROLL FOR ANCHOR LINKS ───────────────────
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', (e) => {
+    const target = document.querySelector(anchor.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+
+// ── KEYBOARD ACCESSIBILITY FOR CARDS ─────────────────
+document.querySelectorAll('.proj-card:not(.proj-card--coming)').forEach(card => {
+  card.setAttribute('tabindex', '0');
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const btn = card.querySelector('.watch-btn:not(:disabled)');
+      btn && btn.click();
+    }
+  });
+});
